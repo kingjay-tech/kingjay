@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>King Jay’s Tech • Website Empire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --gold: #FFD700;
+            --dark: #0a0a0a;
+            --frost: rgba(255, 255, 255, 0.08);
+            --red: #FF4444;
+            --accent-blue: #00BFFF; /* For light strip */
+            --light-strip-gradient: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: #fff;
+            line-height: 1.6;
+            padding-top: 80px; /* Space for fixed header */
+            overflow-x: hidden; /* Prevent horizontal scroll due to animations */
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--frost);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #ffffff12;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+        header nav {
+            display: flex;
+            align-items: center;
+        }
+        header a {
+            color: #fff;
+            margin-left: 1.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        header a:hover {
+            color: var(--gold);
+        }
+        .cart-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+            position: relative;
+            color: #fff; /* Ensure cart icon is white */
+        }
+        .cart-icon:hover {
+            color: var(--gold); /* Hover color for cart icon */
+        }
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--red);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            line-height: 1;
+            min-width: 20px;
+            text-align: center;
+            transform: translate(50%, -50%);
+            pointer-events: none;
+        }
+
+        /* --- Global Section Styling & Light Strip Effect --- */
+        section {
+            padding: 4rem 2rem; /* More vertical padding */
+            max-width: 1200px;
+            margin: auto;
+            position: relative; /* For light strip */
+            overflow: hidden; /* Ensure light strip doesn't bleed out */
+        }
+
+        /* Light Strip Effect */
+        .light-strip {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px; /* Thin line */
+            background: var(--light-strip-gradient);
+            opacity: 0.3; /* Subtle */
+            z-index: 1; /* Below content */
+            animation: lightStripPulse 4s infinite alternate ease-in-out;
+        }
+        .light-strip.bottom {
+            top: auto;
+            bottom: 0;
+        }
+
+        @keyframes lightStripPulse {
+            0% { transform: scaleX(0); opacity: 0; }
+            50% { transform: scaleX(1); opacity: 0.5; }
+            100% { transform: scaleX(0); opacity: 0; }
+        }
+
+        /* Apply light strip to relevant sections */
+        .hero, .services, .catalog-section, .why-us, .faq-section {
+            border-bottom: 1px solid #ffffff12; /* Subtle separation */
+            padding-bottom: 5rem; /* Give space for bottom strip */
+        }
+        .hero .light-strip.top, .services .light-strip.top, .catalog-section .light-strip.top, .why-us .light-strip.top, .faq-section .light-strip.top {
+            top: 0;
+            height: 3px;
+        }
+        .hero .light-strip.bottom, .services .light-strip.bottom, .catalog-section .light-strip.bottom, .why-us .light-strip.bottom, .faq-section .light-strip.bottom {
+            bottom: 0;
+            height: 3px;
+        }
+
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            animation: slideInLeft 1s ease-out;
+        }
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-blue);
+            margin: 1rem auto 0;
+            border-radius: 5px;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            text-align: center;
+            padding-top: 6rem; /* More space for hero image */
+            background: radial-gradient(circle at center, rgba(0,191,255,0.1) 0%, transparent 70%);
+        }
+        .hero img {
+            max-width: 90%;
+            border-radius: 16px;
+            box-shadow: 0 0 40px rgba(0,191,255,0.2), 0 0 100px rgba(0,191,255,0.1);
+            animation: fadeIn 2s ease forwards;
+        }
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-top: 2rem;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+            animation: slideUp 1.5s ease-out;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 800px;
+            margin: 1rem auto 2rem;
+            animation: fadeIn 2s ease-out 0.5s forwards;
+            opacity: 0; /* Hidden initially */
+        }
+        .hero .cta-button {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--dark);
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
+            animation: bounceIn 1s ease-out 1s forwards;
+            opacity: 0; /* Hidden initially */
+        }
+        .hero .cta-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            background-color: #e6c200;
+            box-shadow: 0 8px 20px rgba(255,215,0,0.4);
+        }
+
+        /* --- Services Section --- */
+        .services ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .services li {
+            background: #111;
+            padding: 1.5rem;
+            border-left: 4px solid var(--gold);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .services li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3), 0 0 20px rgba(255,215,0,0.1);
+        }
+        .services h3 {
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+        }
+        .services p {
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        /* --- Why Us Section --- */
+        .why-us p {
+            font-size: 1.1rem;
+            text-align: center;
+            line-height: 2.0;
+            color: #eee;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        /* --- Catalog Section --- */
+        .catalog-section {
+            padding-bottom: 5rem; /* Ensure space for bottom strip */
+        }
+        .catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background: #181818;
+            border: 1px solid #ffffff10;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 0 20px rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.08), 0 0 30px rgba(255,215,0,0.15);
+        }
+        .card h3 {
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .card p {
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            color: #bbb;
+            flex-grow: 1; /* Makes sure description takes available space */
+        }
+        .card .price {
+            font-weight: bold;
+            margin: 1.2rem 0;
+            color: #eee;
+            font-size: 1.3rem;
+            text-align: right;
+        }
+        .card button {
+            background: var(--gold);
+            border: none;
+            color: #000;
+            padding: 0.9rem;
+            width: 100%;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 0.7rem;
+            font-size: 1rem;
+        }
+        .card button:hover {
+            background-color: #e6c200;
+            transform: translateY(-2px);
+        }
+        .card .add-to-cart-btn {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+        }
+        .card .add-to-cart-btn:hover {
+            background: #444;
+            border-color: #777;
+        }
+
+        /* --- FAQ Section (Accordion) --- */
+        .faq-section {
+            padding-bottom: 5rem;
+        }
+        .accordion-item {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .accordion-header {
+            background-color: #222;
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--gold);
+            transition: background-color 0.3s ease;
+        }
+        .accordion-header:hover {
+            background-color: #2a2a2a;
+        }
+        .accordion-header .icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        .accordion-item.active .accordion-header .icon {
+            transform: rotate(180deg);
+        }
+        .accordion-content {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            color: #ccc;
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 200px; /* Adjust as needed for content height */
+            padding: 1rem 1.5rem 1.5rem;
+        }
+
+        /* --- Floating Buttons --- */
+        .floating-whatsapp, .back-to-top, .floating-contact {
+            position: fixed;
+            bottom: 20px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            padding: 0.8rem 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            text-decoration: none;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .floating-whatsapp { right: 20px; background-color: #25D366; }
+        .floating-whatsapp:hover { transform: translateY(-5px) scale(1.05); background-color: #1da851; }
+
+        .back-to-top { left: 20px; background: #444; padding: 0.6rem 0.8rem; font-size: 1rem; display: none; }
+        .back-to-top:hover { transform: translateY(-5px) scale(1.05); background-color: #555; }
+
+        .floating-contact {
+            right: 90px; /* Adjust position relative to whatsapp button */
+            background-color: var(--accent-blue);
+            font-size: 1.2rem;
+            padding: 0.7rem 0.9rem;
+            box-shadow: 0 0 15px rgba(0,191,255,0.3);
+        }
+        .floating-contact:hover { transform: translateY(-5px) scale(1.05); background-color: #008fcc; }
+
+
+        /* --- Cart Modal Styles --- */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        .cart-modal-content {
+            background-color: #1a1a1a;
+            margin: auto;
+            padding: 25px;
+            border: 1px solid #333;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5), 0 0 30px rgba(0,191,255,0.2);
+            position: relative;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: modalFadeIn 0.3s forwards;
+        }
+        .cart-modal-content h2 {
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        .cart-items {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            padding-right: 10px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed #222;
+        }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-info h4 { margin: 0; color: #eee; font-size: 1rem; }
+        .cart-item-info span { font-size: 0.85rem; color: #bbb; }
+        .cart-item .remove-item-btn {
+            background-color: var(--red);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0.4rem 0.7rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s ease;
+        }
+        .cart-item .remove-item-btn:hover { background-color: #cc0000; }
+        .cart-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+            color: var(--gold);
+        }
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .cart-actions button {
+            flex: 1;
+            padding: 0.9rem;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+        }
+        .cart-actions .checkout-btn { background: var(--gold); color: #000; }
+        .cart-actions .checkout-btn:hover { background: #e6c200; }
+        .cart-actions .close-modal-btn { background: #333; color: white; }
+        .cart-actions .close-modal-btn:hover { background: #555; }
+        .cart-empty-message { text-align: center; padding: 2rem 0; color: #aaa; }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #111;
+            color: #aaa;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid #ffffff12;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+        footer .footer-links {
+            margin-bottom: 1.5rem;
+        }
+        footer .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        footer .footer-links a:hover {
+            color: var(--gold);
+        }
+        footer .social-icons {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        footer .social-icons a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin: 0 0.8rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        footer .social-icons a:hover {
+            color: var(--accent-blue);
+            transform: translateY(-3px);
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        @keyframes slideUp { from {opacity: 0; transform: translateY(20px);} to {opacity: 1; transform: translateY(0);} }
+        @keyframes slideInLeft { from {opacity: 0; transform: translateX(-50px);} to {opacity: 1; transform: translateX(0);} }
+        @keyframes bounceIn {
+            0% { transform: scale(0.1); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+                position: static;
+                padding-top: 1rem;
+            }
+            header h1 {
+                margin-bottom: 0.5rem;
+                font-size: 1.3rem;
+            }
+            header nav {
+                width: 100%;
+                justify-content: space-around;
+                margin-top: 0.5rem;
+            }
+            header nav a {
+                margin: 0 0.5rem;
+                font-size: 0.9rem;
+            }
+            .cart-icon {
+                margin-left: 0.5rem;
+                font-size: 1.1rem;
+            }
+            body { padding-top: 0; }
+            section { padding: 2rem 1rem; }
+            h2 { font-size: 2rem; margin-bottom: 2rem; }
+            .hero h2 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
+            .hero .cta-button { padding: 0.8rem 2rem; font-size: 1rem; }
+            .services ul, .catalog { grid-template-columns: 1fr; gap: 1.2rem; }
+            .card { padding: 1.5rem; }
+            .floating-whatsapp, .back-to-top, .floating-contact {
+                bottom: 10px;
+                right: 10px;
+                padding: 0.6rem 0.8rem;
+                font-size: 1.2rem;
+            }
+            .back-to-top { left: 10px; }
+            .floating-contact { right: 70px; }
+            .cart-modal-content { width: 95%; padding: 15px; }
+            .accordion-header { padding: 1rem; font-size: 1rem; }
+            .accordion-content { padding: 0 1rem; }
+            .accordion-item.active .accordion-content { padding: 0.8rem 1rem 1rem; }
+            footer { padding: 2rem 1rem; }
+            footer .footer-links a { margin: 0 0.5rem; font-size: 0.8rem; }
+            footer .social-icons a { font-size: 1.2rem; margin: 0 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>KING JAY’S TECH</h1>
+    <nav>
+        <a href="index.html#shop">Websites</a>
+        <a href="services.html">Services</a>
+        <a href="business-ideas.html">Business Ideas</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="#" class="cart-icon" id="cart-icon">🛒<span class="cart-badge" id="cart-badge">0</span></a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="light-strip top"></div>
+    <img src="https://via.placeholder.com/1200x400/0a0a0a/FFD700?text=Your+Dream+Website+Banner" alt="King Jay's Tech Banner">
+    <h2>Your Dream Website, Built by the King</h2>
+    <p>Empowering your digital presence with cutting-edge web solutions and innovative business ideas.</p>
+    <a href="#shop" class="cta-button">Explore Websites</a>
+    <div class="light-strip bottom"></div>
+</section>
+
+<section id="services-preview" class="services">
+    <div class="light-strip top"></div>
+    <h2>What We Build & Offer</h2>
+    <ul>
+        <li>
+            <h3>Custom Websites</h3>
+            <p>From captivating landing pages to robust e-commerce platforms, we craft responsive, secure, and high-performance websites tailored to your vision.</p>
+        </li>
+        <li>
+            <h3>Business Idea Consulting</h3>
+            <p>Get access to innovative, market-ready business concepts. We provide well-researched ideas to jumpstart your entrepreneurial journey.</p>
+        </li>
+        <li>
+            <h3>Digital Marketing Boost</h3>
+            <p>Amplify your online presence with SEO, content strategy, and social media guidance to reach your target audience effectively.</p>
+        </li>
+        <li>
+            <h3>Ongoing Support</h3>
+            <p>Reliable post-launch support and maintenance to ensure your digital assets continue to perform optimally.</p>
+        </li>
+    </ul>
+    <div class="light-strip bottom"></div>
+</section>
+
+<section id="why" class="why-us">
+    <div class="light-strip top"></div>
+    <h2>Why Choose King Jay’s Tech</h2>
+    <p>
+        ✔ **Fast Delivery:** Get your projects completed swiftly without compromising quality.<br>
+        ✔ **Secure & Mobile-Friendly:** Websites built with the latest security standards and perfect responsiveness.<br>
+        ✔ **Free Consultations:** Discuss your project needs with King Jay before you commit.<br>
+        ✔ **Royal Quality, Every Time:** Expect nothing less than excellence and attention to detail.<br>
+        ✔ **Innovative Solutions:** Beyond websites, we offer groundbreaking business ideas and tech insights.
+    </p>
+    <div class="light-strip bottom"></div>
+</section>
+
+<section id="shop" class="catalog-section">
+    <div class="light-strip top"></div>
+    <h2>Our Website Packages</h2>
+    <div class="catalog" id="website-list"></div>
+    <div class="light-strip bottom"></div>
+</section>
+
+<section id="faq" class="faq-section">
+    <div class="light-strip top"></div>
+    <h2>FAQs</h2>
+    <div class="accordion">
+        <div class="accordion-item">
+            <div class="accordion-header">
+                How long does it take to build a website?
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-content">
+                Most standard websites are completed within 3–7 business days, depending on complexity and content availability. E-commerce and more complex platforms may take a bit longer.
+            </div>
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header">
+                What payment methods do you accept?
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-content">
+                We accept Mobile Money (Momo) and direct bank transfers. PayPal payments can be arranged upon request for international clients.
+            </div>
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header">
+                Can I see examples of your previous work?
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-content">
+                Absolutely! During your free consultation, we can showcase a portfolio of our diverse projects that align with your industry and needs.
+            </div>
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header">
+                What kind of support do you offer after the website is launched?
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-content">
+                We offer ongoing technical support, maintenance packages, and can assist with future updates and expansions to ensure your website runs smoothly.
+            </div>
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header">
+                How do I get started with a business idea?
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-content">
+                You can browse our "Business Ideas" section and contact us directly about the one you're interested in. We'll provide detailed insights and guide you on the next steps.
+            </div>
+        </div>
+    </div>
+    <div class="light-strip bottom"></div>
+</section>
+
+<a href="https://wa.me/233538858495" target="_blank" class="floating-whatsapp" title="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<a href="contact.html" class="floating-contact" title="Contact Us"><i class="fas fa-envelope"></i></a>
+<a href="#" class="back-to-top" id="back-to-top" title="Back to Top">↑</a>
+
+<div id="cart-modal" class="cart-modal">
+    <div class="cart-modal-content">
+        <h2>Your Cart</h2>
+        <ul id="cart-items" class="cart-items">
+        </ul>
+        <p id="cart-empty-message" class="cart-empty-message" style="display: none;">Your cart is empty.</p>
+        <div class="cart-total">
+            Total: <span id="cart-total-price">GHS 0</span>
+        </div>
+        <div class="cart-actions">
+            <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+            <button class="close-modal-btn" id="close-cart-modal">Continue Shopping</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="light-strip top"></div>
+    <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="business-ideas.html">Business Ideas</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="#">Privacy Policy</a> <a href="#">Terms of Service</a> </div>
+    <div class="social-icons">
+        <a href="https://facebook.com/yourprofile" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com/yourprofile" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://instagram.com/yourprofile" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p>&copy; 2025 King Jay’s Tech. All rights reserved.</p>
+    <div class="light-strip bottom"></div>
+</footer>
+
+<script>
+    const WA_PHONE = '233538858495';
+    const SMS_PHONE = '0538858495';
+    const WA_GREETING = "Hello King Jay's Tech, I'm interested in your services.";
+
+    const websites = [
+        { id: 1, name: "Starter Portfolio", description: "Sleek 5-page portfolio site to showcase your work or personal brand.", price: 500, displayPrice: "GHS 500" },
+        { id: 2, name: "E-Commerce Bundle", description: "Full-featured online store with payment gateway, product management, and admin panel.", price: 1500, displayPrice: "GHS 1500" },
+        { id: 3, name: "Professional Blog", description: "An SEO-optimized blog platform with comment sections, categories, and author profiles.", price: 800, displayPrice: "GHS 800" },
+        { id: 4, name: "Corporate Presence", description: "Multi-section business site with services, team, testimonials, and contact features.", price: 1200, displayPrice: "GHS 1200" },
+        { id: 5, name: "Booking & Events Site", description: "Allow clients to book appointments or register for events directly on your platform.", price: 1000, displayPrice: "GHS 1000" },
+        { id: 6, name: "NGO/Church Portal", description: "Dedicated site for non-profits with donation features, event calendars, and news sections.", price: 900, displayPrice: "GHS 900" }
+    ];
+
+    let cart = []; // Stores objects like { id: 1, name: "Starter Portfolio", price: 500 }
+
+    const cartBadge = document.getElementById('cart-badge');
+    const cartIcon = document.getElementById('cart
